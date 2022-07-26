@@ -10,6 +10,7 @@ from api.routes.books import book_routes
 from api.routes.users import user_routes
 from api.config.config import ProductionConfig, TestingConfig, DevelopmentConfig
 from flask_jwt_extended import JWTManager
+from api.utils.email import mail
 
 app = Flask(__name__)
 
@@ -54,6 +55,7 @@ def not_found(e):
 
 db.init_app(app)
 jwt = JWTManager(app)
+mail.init_app(app)
 with app.app_context():
     db.create_all()
 logging.basicConfig(

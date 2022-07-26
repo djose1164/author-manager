@@ -1,3 +1,4 @@
+from crypt import methods
 from unittest import result
 from flask import Blueprint, request
 from flask_jwt_extended import create_access_token
@@ -5,6 +6,7 @@ from api.utils.responses import response_with
 import api.utils.responses as resp
 from api.utils.database import db
 from api.models.users import User, UserSchema
+from api.utils.token import confirm_verification_token
 
 user_routes = Blueprint("user_routes", __name__)
 
@@ -54,3 +56,21 @@ def authenticate_user():
     except Exception as e:
         print(f"## {e}")
         return response_with(resp.INVALID_INPUT_422)
+
+user_routes.route("/confirm/<token>", methods=["GET"])
+def verify_email(token):
+    try:
+        email = confirm_verification_token(token)
+    except Exception:
+        return response_with(resp.SERVER_ERROR_500)
+    user = User.query.filter_by(email=email).first()
+    if user.is_verified:
+        return response_with(resp.INVALID_INPUT_422)
+    else:
+        user.is_verified = True
+        db.session.add(user)
+        db.session.commit()
+        return response_with(resp.SUCCESS_200, value={
+            "message": "Email verified, you can process to login now."
+        })
+    
