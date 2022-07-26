@@ -44,13 +44,13 @@ def response_with(
     response, value=None, message=None, error=None, headers={}, pagination=None
 ):
     result = {}
-    if value is not None:
+    if value:
         result.update(value)
-    if response.get("message") is not None:
+    if response.get("message"):
         result.update({"message": response["message"]})
-    if error is not None:
+    if error:
         result.update({"error": error})
-    if pagination is not None:
+    if pagination:
         result.update({"pagination": pagination})
 
     result.update({"code": response["code"]})

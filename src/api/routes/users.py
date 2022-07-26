@@ -35,7 +35,7 @@ def authenticate_user():
             access_token = create_access_token(identity=data["username"])
             return response_with(
                 resp.SUCCESS_201,
-                message={
+                value={
                     "message": f"Logged in as {current_user.username}",
                     "access_token": access_token,
                 },
