@@ -1,7 +1,15 @@
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+
 class Config:
     DEBUG = False
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_SECRET_KEY = os.environ.get("MY_FLASK_SECRET")
 
 
 class ProductionConfig(Config):
