@@ -1,12 +1,13 @@
-from crypt import methods
-from unittest import result
 from flask import Blueprint, request
 from flask_jwt_extended import create_access_token
-from api.utils.responses import response_with
+from flask import url_for, render_template_string
+from api.utils.email import send_email
+
 import api.utils.responses as resp
+from api.utils.responses import response_with
 from api.utils.database import db
 from api.models.users import User, UserSchema
-from api.utils.token import confirm_verification_token
+from api.utils.token import confirm_verification_token, generate_verification_token
 
 user_routes = Blueprint("user_routes", __name__)
 
@@ -15,12 +16,27 @@ user_routes = Blueprint("user_routes", __name__)
 def create_user():
     try:
         data = request.get_json()
+        if User.find_user_by_email(data["username"]) or User.find_user_by_username(
+            data["email"]
+        ):
+            return response_with(resp.INVALID_INPUT_422)
         data["password"] = User.generate_hash(data["password"])
         user_schema = UserSchema()
         user = user_schema.load(data)
-        return response_with(
-            resp.SUCCESS_200, value={"user": user_schema.dump(user.create())}
+        token = generate_verification_token(data["email"])
+        verification_email = url_for(
+            "user_routes.verify_email", token=token, _external=True
         )
+        html = render_template_string(
+            "<p>Welcome! Thanks for signing up. Please follow this link"
+            "to activate your account:</p> <p><a href='{{verification_email}}'>"
+            "{{verification_email}}</a></p> <br> <p>Thanks!</p>",
+            verification_email=verification_email,
+        )
+        subject = "Please verify your email"
+        send_email(user.email, subject, html)
+        user.create()
+        return response_with(resp.SUCCESS_200)
     except Exception as e:
         print(e)
         return response_with(resp.INVALID_INPUT_422)
@@ -57,7 +73,8 @@ def authenticate_user():
         print(f"## {e}")
         return response_with(resp.INVALID_INPUT_422)
 
-user_routes.route("/confirm/<token>", methods=["GET"])
+
+@user_routes.route("/confirm/<token>", methods=["GET"])
 def verify_email(token):
     try:
         email = confirm_verification_token(token)
@@ -70,7 +87,7 @@ def verify_email(token):
         user.is_verified = True
         db.session.add(user)
         db.session.commit()
-        return response_with(resp.SUCCESS_200, value={
-            "message": "Email verified, you can process to login now."
-        })
-    
+        return response_with(
+            resp.SUCCESS_200,
+            value={"message": "Email verified, you can process to login now."},
+        )
