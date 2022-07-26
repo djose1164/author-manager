@@ -28,9 +28,18 @@ def create_user():
 def authenticate_user():
     try:
         data = request.get_json()
-        current_user = User.find_user_by_username(data["username"])
+        current_user = None
+
+        if data.get("email"):
+            current_user = User.find_user_by_email(data["email"])
+        elif data.get("username"):
+            current_user = User.find_user_by_username(data["username"])
+
         if not current_user:
             return response_with(resp.SERVER_ERROR_404)
+        if not current_user.is_verified:
+            return response_with(resp.BAD_REQUEST_400)
+
         if User.verify_hash(data["password"], current_user.password):
             access_token = create_access_token(identity=data["username"])
             return response_with(
