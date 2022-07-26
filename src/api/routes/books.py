@@ -4,12 +4,14 @@ from api.utils.responses import response_with
 import api.utils.responses as resp
 from api.models.books import Book, BookSchema
 from api.utils.database import db
+from flask_jwt_extended import jwt_required
 
 
 book_routes = Blueprint("book_routes", __name__)
 
 
 @book_routes.route("/", methods=["POST"])
+@jwt_required()
 def create_book():
     try:
         data = request.get_json()
@@ -29,6 +31,7 @@ def get_book_detail(id):
 
 
 @book_routes.route("/<int:id>", methods=["PUT"])
+@jwt_required()
 def update_book_detail(id):
     data = request.get_json()
     get_book = Book.query.get_or_404(id)
@@ -40,6 +43,7 @@ def update_book_detail(id):
 
 
 @book_routes.route("/<int:id>", methods=["PATCH"])
+@jwt_required()
 def modify_book_detail(id):
     get_book = Book.query.get_or_404(id)
     data = request.get_json()
@@ -53,6 +57,7 @@ def modify_book_detail(id):
 
 
 @book_routes.route("/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_book(id):
     get_book = Book.query.get_or_404(id)
     db.session.delete(get_book)

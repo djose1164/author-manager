@@ -6,14 +6,16 @@ from api.models.authors import Author, AuthorSchema
 from api.routes.books import book_routes
 from api.models.books import Book, BookSchema
 from api.utils.database import db
+from flask_jwt_extended import jwt_required
 
 
 author_routes = Blueprint("author_routes", __name__)
 
 
 @author_routes.route("/", methods=["POST"])
+@jwt_required()
 def create_author():
-  
+
     data = request.get_json()
     author_schema = AuthorSchema()
     author_model = author_schema.load(data)
@@ -25,7 +27,6 @@ def create_author():
     print("## Here")
     result = author_schema.dump(author.create())
     return response_with(resp.SUCCESS_201, {"author": result})
-
 
 
 @author_routes.route("/", methods=["GET"])
@@ -44,6 +45,7 @@ def get_author_details(author_id):
 
 
 @author_routes.route("/<int:author_id>", methods=["PUT"])
+@jwt_required()
 def update_author_details(author_id):
     data = request.get_json()
     get_author = Author.query.get_or_404(author_id)
@@ -56,6 +58,7 @@ def update_author_details(author_id):
 
 
 @author_routes.route("/<int:author_id>", methods=["PATCH"])
+@jwt_required()
 def modify_author_details(author_id):
     data = request.get_json()
     print("data: ", data)
@@ -71,6 +74,7 @@ def modify_author_details(author_id):
 
 
 @author_routes.route("/<int:author_id>", methods=["DELETE"])
+@jwt_required()
 def delete_author(author_id):
     get_author = Author.query.get_or_404(author_id)
     db.session.delete(get_author)
