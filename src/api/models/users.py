@@ -1,3 +1,5 @@
+from email.policy import default
+from enum import unique
 from sqlalchemy import false
 from api.utils.database import db
 from passlib.hash import pbkdf2_sha256 as sha256
@@ -10,6 +12,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
+    is_verified = db.Column(db.Boolean, nullable=False, default=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
 
     def create(self):
         db.session.add(self)
@@ -19,6 +23,10 @@ class User(db.Model):
     @classmethod
     def find_user_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
+
+    @classmethod
+    def find_user_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
 
     @staticmethod
     def generate_hash(password):
@@ -37,3 +45,4 @@ class UserSchema(SQLAlchemyAutoSchema):
 
     id = fields.Number(dump_only=True)
     username = fields.String(required=True)
+    email = fields.String(required=True)
