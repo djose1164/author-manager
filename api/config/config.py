@@ -14,10 +14,10 @@ class Config:
     SECRET_KEY = "do_not_ask"
     SECURITY_PASSWORD_SALT = "do_not_ask_me"
 
-    MAIL_DEFAULT_SENDER = "oscarelpollo00@gmail.com"
-    MAIL_SERVER = "smtp.gmail.com"
+    MAIL_DEFAULT_SENDER = "oscarelpollo00@gmail.net"
+    MAIL_SERVER = "smtp.gmail.net"
     MAIL_PORT = 465
-    MAIL_USERNAME = "oscarelpollo00@gmail.com"
+    MAIL_USERNAME = "oscarelpollo00@gmail.net"
     MAIL_PASSWORD = "fwenugpluonqngfh"
     MAIL_USE_TSL = False
     MAIL_USE_SSL = True
@@ -25,14 +25,14 @@ class Config:
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = (
-        "mysql+pymysql://djose1164:Kirito08.@db4free.com/cara_test"
+        "mysql+pymysql://djose1164:Kirito08.@db4free.net/cara_test"
     )
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = (
-        "mysql+pymysql://djose1164:Kirito08.@db4free.com/cara_test"
+        "mysql+pymysql://djose1164:Kirito08.@db4free.net/cara_test"
     )
     SQLALCHEMY_ECHO = False
 
@@ -40,6 +40,6 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = (
-        "mysql+pymysql://djose1164:Kirito08.@db4free.com/cara_test"
+        "mysql+pymysql://djose1164:Kirito08.@db4free.net/cara_test"
     )
     SQLALCHEMY_ECHO = False
