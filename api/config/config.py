@@ -24,16 +24,22 @@ class Config:
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://djose1164:Kirito08.@localhost/cara"
+    SQLALCHEMY_DATABASE_URI = (
+        "mysql+pymysql://djose1164:Kirito08.@db4free.com/cara_test"
+    )
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://djose1164:Kirito08.@localhost/cara"
+    SQLALCHEMY_DATABASE_URI = (
+        "mysql+pymysql://djose1164:Kirito08.@db4free.com/cara_test"
+    )
     SQLALCHEMY_ECHO = False
 
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://djose1164:Kirito08.@localhost/cara"
+    SQLALCHEMY_DATABASE_URI = (
+        "mysql+pymysql://djose1164:Kirito08.@db4free.com/cara_test"
+    )
     SQLALCHEMY_ECHO = False
