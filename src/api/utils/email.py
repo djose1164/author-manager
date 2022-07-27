@@ -5,13 +5,11 @@ mail = Mail()
 
 
 def send_email(to, subject, template):
-    mail.send(
-        Message(
-            subject,
-            recipients=[
-                to,
-            ],
-            html=template,
-            sender=current_app.config["MAIL_DEFAULT_SENDER"],
-        )
+    msg = Message(
+        subject,
+        recipients=[
+            to,
+        ],
+        html=template,
     )
+    mail.send(msg)
