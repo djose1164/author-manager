@@ -3,7 +3,7 @@ import os
 import sys
 from api.utils.responses import response_with
 import api.utils.responses as resp
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template_string
 from api.utils.database import db
 from api.routes.authors import author_routes
 from api.routes.books import book_routes
@@ -23,7 +23,6 @@ match os.environ.get("WORK_ENV"):
         app_config = DevelopmentConfig
 
 app.config.from_object(app_config)
-
 
 app.register_blueprint(author_routes, url_prefix="/api/authors")
 app.register_blueprint(book_routes, url_prefix="/api/books")
@@ -53,8 +52,8 @@ def not_found(e):
     return response_with(resp.SERVER_ERROR_404)
 
 
-db.init_app(app)
 jwt = JWTManager(app)
+db.init_app(app)
 mail.init_app(app)
 with app.app_context():
     db.create_all()
@@ -63,5 +62,6 @@ logging.basicConfig(
     format="%(asctime)s|%(levelname)s|%(filename)s:%(lineno)s|%(message)s",
     level=logging.DEBUG,
 )
+
 if __name__ == "__main__":
     app.run(port=5000, host="0.0.0.0", use_reloader=False)
