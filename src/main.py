@@ -31,7 +31,7 @@ app.register_blueprint(user_routes, url_prefix="/api/users")
 
 
 @app.after_request
-def add_heaeder(response):
+def add_header(response):
     return response
 
 
