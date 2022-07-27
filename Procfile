@@ -1,1 +1,1 @@
-web: cd src && gunicorn run:application
+web: gunicorn run:application
