@@ -1,9 +1,9 @@
 from flask import Blueprint, request
 from flask_jwt_extended import create_access_token
 from flask import url_for, render_template_string
-from api.utils.email import send_email
 
 import api.utils.responses as resp
+from api.utils.email import send_email
 from api.utils.responses import response_with
 from api.utils.database import db
 from api.models.users import User, UserSchema
