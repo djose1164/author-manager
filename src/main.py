@@ -29,6 +29,10 @@ app.register_blueprint(book_routes, url_prefix="/api/books")
 app.register_blueprint(user_routes, url_prefix="/api/users")
 
 
+@app.route("/")
+def index():
+	return "<h1>Welcome to Author Manager</h1>"
+
 @app.after_request
 def add_header(response):
     return response
