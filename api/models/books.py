@@ -1,5 +1,4 @@
 from dataclasses import field
-from turtle import title
 from api.utils.database import db
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow import fields
@@ -28,7 +27,6 @@ class BookSchema(SQLAlchemyAutoSchema):
         model = Book
         sqla_session = db.session
         load_instance = True
-
 
     id = fields.Number(dump_only=True)
     title = fields.String(required=True)
