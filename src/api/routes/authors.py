@@ -24,7 +24,6 @@ def create_author():
         print('author_model["books"]:', author_model["books"])
 
     author = Author(**author_model)
-    print("## Here")
     result = author_schema.dump(author.create())
     return response_with(resp.SUCCESS_201, {"author": result})
 
