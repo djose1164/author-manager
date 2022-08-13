@@ -32,7 +32,7 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = (
-        "mysql+pymysql://djose1164:Kirito08.@db4free.net/test_cara"
+        "mysql+pymysql://djose1164:Kirito08.@localhost/author_manager"
     )
     SQLALCHEMY_ECHO = False
 
@@ -40,6 +40,6 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = (
-        "mysql+pymysql://djose1164:Kirito08.@db4free.net/test_cara"
+        "mysql+pymysql://djose1164:Kirito08.@localhost/author_manager"
     )
     SQLALCHEMY_ECHO = False
